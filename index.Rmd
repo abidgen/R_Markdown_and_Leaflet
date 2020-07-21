@@ -1,0 +1,49 @@
+---
+title: "USA Hospital Locations"
+author: "Abid Al Reza"
+date: "7/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+```
+
+## Description
+
+This map shows the locations of the hospitals in the USA. Each data point on the map shows the following information about the Hospital (If available):
+
+- Name
+- TelePhone
+- Address
+- Website
+
+The original data was collected from [here](https://hifld-geoplatform.opendata.arcgis.com/datasets/hospitals/data).
+
+## Code and Output
+```{r Map}
+if(!require(leaflet)){install.packages('leaflet')}; library(leaflet)
+if(!require(dplyr)){install.packages('dplyr')}; library(dplyr)
+
+url <- "https://opendata.arcgis.com/datasets/6ac5e325468c4cb9b905f1728d6fbf0f_0.csv?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D"
+
+download.file(url, destfile = "Hospitals.csv", mode="wb")
+
+
+hospital_data2<- read.csv("Hospitals.csv", header = TRUE,
+                          na.strings = c("NOT AVAILABLE"))
+
+
+hospital_data2$WEBSITE<- ifelse(is.na(hospital_data2$WEBSITE),NA,paste0("<a href='",hospital_data2$WEBSITE,"'>",hospital_data2$WEBSITE,"</a>"  ))
+
+
+
+hospital_data2 %>% leaflet() %>% 
+     addTiles() %>% 
+     addMarkers(lat = ~LATITUDE,lng = ~LONGITUDE,
+                popup = ~paste("Name: ", NAME,"<br>",
+                               "TelePhone: ",TELEPHONE ,"<br>",
+                               "Address: ",paste0(ADDRESS,", ",
+                                                  CITY,", ", STATE," ", ZIP) ,"<br>","Website: ", WEBSITE),
+                clusterOptions = markerClusterOptions())
+```
