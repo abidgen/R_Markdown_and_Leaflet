@@ -8,6 +8,6 @@ The rubric contains the following two questions:
 - Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
 - Is the web page a presentation and does it feature an interactive plot that appears to have been created with Plotly?
 
-Example Submissionsless 
+Example Submissions
 
 [here](https://seankross.neocities.org/week3.html#1)'s an extremely minimal passing example, but we hope your submission is much cooler!
